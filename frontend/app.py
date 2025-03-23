@@ -12,8 +12,8 @@ if uploaded_file:
         response = requests.post("http://127.0.0.1:8000/process/", files=files)
         response.raise_for_status()  # Raises HTTP error if status code is 4xx/5xx
         
-        data = response.json()  # Ensure response is JSON
-        
+        data = response.json()
+
         if "summary" in data:
             st.write("### Summary:")
             st.write(data["summary"])

@@ -8,7 +8,7 @@ def summarize_text(text):
     
     try:
         genai.configure(api_key=api_key)
-        model = genai.GenerativeModel("gemini-pro-vision")
+        model = genai.GenerativeModel("gemini-1.5-flash")  # Updated model name
         response = model.generate_content(text)
         return response.text if response else "Error generating summary"
     except Exception as e:

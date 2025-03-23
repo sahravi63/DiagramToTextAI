@@ -1,0 +1,17 @@
+fastapi==0.115.11
+uvicorn==0.33.0
+pytesseract==0.3.13
+easyocr==1.7.2
+paddleocr==2.10.0
+paddlepaddle==2.6.2
+protobuf==3.20.2
+grpcio-status==1.48.2  # Compatible with protobuf 3.20.2
+grpcio==1.48.2  # Ensures gRPC compatibility
+opencv-python==4.11.0.86
+pdf2image==1.17.0
+reportlab==4.3.1
+python-docx==1.1.2
+python-pptx==1.0.2
+google-generativeai==0.1.0rc1
+streamlit==1.40.1
+requests==2.32.3

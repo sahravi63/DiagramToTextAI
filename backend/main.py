@@ -22,8 +22,10 @@ os.makedirs(temp_dir, exist_ok=True)
 
 @app.post("/process/")
 async def process_file(file: UploadFile = File(...)):
+    file_path = os.path.join(temp_dir, file.filename)
+    
     try:
-        file_path = os.path.join(temp_dir, file.filename)
+        # Save uploaded file to temporary directory
         with open(file_path, "wb") as buffer:
             shutil.copyfileobj(file.file, buffer)
 
@@ -42,20 +44,21 @@ async def process_file(file: UploadFile = File(...)):
 
         return {
             "summary": summary,
-            "pdf": f"/download/{pdf_path}",
-            "docx": f"/download/{docx_path}",
-            "ppt": f"/download/{ppt_path}"
+            "pdf": pdf_path,
+            "docx": docx_path,
+            "ppt": ppt_path
         }
     
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Processing error: {str(e)}")
     
     finally:
-        os.remove(file_path)  # Clean up temporary file after processing
+        if os.path.exists(file_path):
+            os.remove(file_path)  # Clean up temporary file
 
-@app.get("/download/{file_path:path}")
-async def download_file(file_path: str):
-    decoded_path = urllib.parse.unquote(file_path)
-    if os.path.exists(decoded_path):
-        return FileResponse(decoded_path, filename=os.path.basename(decoded_path))
+@app.get("/download/{filename}")
+async def download_file(filename: str):
+    file_path = os.path.join(output_dir, filename)
+    if os.path.exists(file_path):
+        return FileResponse(file_path, filename=filename)
     raise HTTPException(status_code=404, detail="File not found")
